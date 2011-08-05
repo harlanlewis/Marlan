@@ -3,3 +3,4 @@ include/
 lib/
 app/*.pyc
 app/dropbox/*.pyc
+.sass-cache/
