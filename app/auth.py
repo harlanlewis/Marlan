@@ -1,7 +1,7 @@
 import tornado.escape
 import base
 from dropbox import auth, client
-from db import SQLite as db
+#from db import SQLite as db
 import os
 pwd = os.path.dirname(os.path.abspath(__file__))
 
