@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>{{ title }} | Marlan</title>
+  <meta name="description" content="Marlan is a simple tool for quickly creating relationships between text and media files, storing them on Dropbox, and providing read/write web access with an attractive template.
+  ">
+  <meta name="author" content="Eric Danielson (danielsoneg@gmail.com) &amp; Harlan Lewis (harlan@harlanlewis.com)">
+
+  <!-- prevent this page from ever caching -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="/static/stylesheets/screen.css">
+
+</head>
+
+<body {% if public %}class='public'{% else %}class='private'{% end %}>
+
+  <nav id="primary_nav">
+    {% if not public %}
+      <div class="password">
+        <span>Password</span><!-- Public version of this page: /{{ uid }}{% if paths %}{{ paths[-1] }}{% end %}/{{title}} -->
+        <form>
+          <label>{% if flist['has_pass'] %}Set {% end %}Password:</label>
+          <input id='pw' type='password' value='{% if flist['has_pass'] %}password{% end %}' />
+          <button id="pwgo">Go</button>
+        </form>
+      </div>
+    {% end %}
+    <ol>
+      <li class="parent">
+        <a href="#">Parent</a>
+      </li>
+      <li class="item public">
+        <a href='/' title="Public">Public</a>
+      </li>
+      {% for path in paths %}
+        <li class="item">
+          <a href="{{ path }}" title="{{ path }}">{{ path[path.rfind('/')+1:] }}</a>
+        </li>
+      {% end %}
+      <li class="current">
+        {{title}}
+      </li>
+      {% if not public %}
+        <li class="create_page">
+          <input type="text" class="defaulted" value="new page" />
+          <button>&#187;</button>
+        </li>
+      {% end %}
+    </ol>
+  </nav>
+
+  <article>
+    <div class="content">
+      <header class="article_header">
+        <hgroup>
+          <h1>{{ title }}</h1>
+          <h2 {% if not public %} contenteditable='true' {% end %} tabindex="1"></h2>
+        </hgroup>
+      </header>
+      <section class="text_content" {% if not public %} contenteditable='true' {% end %} tabindex="1">
+        {% if public %}<form><input id='passwordBox' type='text'></input><input type='button' id='passwordGo' value='Go'></input></form>{% end %}
+      </section>
+      <p class="reading_time"></p>
+    </div>
+
+    {% if len(flist['images']) != 0 or len(flist['files']) != 0 or len(flist['folders']) != 0 or public %}
+      <aside>
+        {% if len(flist['folders']) != 0 %}
+          <section class="folders">
+            <h1>Folders</h1>
+            <ol>
+              {% for folder in flist['folders'] %}
+                <li>
+                  <a href="{{ folder }}" title="{{ folder[folder.rfind('/')+1:] }}">{{ folder[folder.rfind('/')+1:] }}</a>
+                </li>
+              {% end %}
+            </ol>
+          </section>
+        {% end %}
+        {% if len(flist['images']) != 0 %}
+          <section class="images">
+            <h1>Images</h1>
+            <ul class="controls">
+              <li class="close"><button rel="close" title="Close image viewer">X</button></li>
+              <li class="previous"><button rel="previous" title="View previous image">Previous</button></li>
+              <li class="view_mode">
+                <button rel="view_mode" title="Set image viewer display mode">Display</button>
+              </li>
+              <li class="next"><button rel="next" title="View next image">Next</button></li>
+            </ul>
+            <ul class="image_list">
+              {% for image in flist['images'] %}
+                <li>
+                  <a class="image_link" href="http://dl.dropbox.com/u/{{ uid }}{{ image }}" title="{{ image[image.rfind('/')+1:] }}"><img src="http://dl.dropbox.com/u/{{ uid }}{{ image }}"></a>
+                </li>
+              {% end %}
+            </ul>
+          </section>
+        {% end %}
+
+        {% if len(flist['files']) != 0 %}
+          <section class="files">
+            <h1>Files</h1>
+            <div class="info">
+              <span>info</span>
+              <p><strong>Files are downloaded or viewed</strong> based on your computer/browser settings and the file type.</p>
+            </div>
+            <ul>
+              {% for file in flist['files'] %}
+                <li>
+                  <a href="http://dl.dropbox.com/u/{{ uid }}{{ file }}" title="{{ file[file.rfind('/')+1:] }}">{{ file[file.rfind('/')+1:] }}</a>
+                </li>
+              {% end %}
+            </ul>
+          </section>
+        {% end %}
+      </aside>
+    {% end %}
+
+  </article>
+
+  <!-- Javascripts live at the end -->
+  <script src="/static/javascripts/libs/jquery.1.5.2.min.js"></script>
+  <script src="/static/javascripts/plugins/jquery.defaulted.js"></script>
+  <script src="/static/javascripts/jquery.application.js"></script>
+  <script src="/static/javascripts/jquery.images.js"></script>
+  {% if public %}<script src='/static/javascripts/jquery.public.js'></script>{% end %}
+  {% if not public %}<script src='/static/javascripts/jquery.private.js'></script>{% end %}
+</body>
+</html>
