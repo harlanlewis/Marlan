@@ -108,26 +108,26 @@ var _contentEditing = function(){
       }
     });
     // capture tabs in article edit.
-    // articleText.keydown(function(e){  
-    //   if (e.keyCode == 9) { // "Tab"
-    //     e.preventDefault();
-    // 
-    //     var myselection = null;
-    //     if(document.getSelection) {
-    //       myselection = document.getSelection();
-    //     } else if (document.selection) {
-    //       myselection = document.selection;
-    //     }
-    //     var r = myselection.getRangeAt(0);
-    //     var container = r.startContainer;
-    //     var text = container.textContent;
-    //     var start = r.startOffset;
-    //     var end = r.endOffset;
-    //     var tabString = "    ";
-    //     container.textContent = text.substring(0,start)+tabString+text.substring(end);
-    //     myselection.collapse(container,start+(tabString.length));
-    //   }
-    // });
+    articleText.keydown(function(e){  
+      if (e.keyCode == 9) { // "Tab"
+        e.preventDefault();
+
+        var myselection = null;
+        if(document.getSelection) {
+          myselection = document.getSelection();
+        } else if (document.selection) {
+          myselection = document.selection;
+        }
+        var r = myselection.getRangeAt(0);
+        var container = r.startContainer;
+        var text = container.textContent;
+        var start = r.startOffset;
+        var end = r.endOffset;
+        var tabString = "    ";
+        container.textContent = text.substring(0,start)+tabString+text.substring(end);
+        myselection.collapse(container,start+(tabString.length));
+      }
+    });
   });
 
   // save content on click out of content editable area
